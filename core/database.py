@@ -54,8 +54,7 @@ def init_db():
 def add_device(ip, mac='', hostname='', vendor=''):
     now = datetime.now().isoformat()
     c = _get_conn()
-    c.execute("SELECT id FROM devices WHERE ip=?", (ip,))
-    row = c.fetchone()
+    row = c.execute("SELECT id FROM devices WHERE ip=?", (ip,)).fetchone()
     if row:
         c.execute("UPDATE devices SET last_seen=?, status='online', hostname=COALESCE(NULLIF(?,''), hostname) WHERE ip=?", (now, hostname, ip))
     else:
